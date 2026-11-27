@@ -24,7 +24,7 @@
   body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,sans-serif;
     background:#edf2f9;color:var(--ink);min-height:100vh;display:flex;justify-content:center;}
   .phone{width:100%;max-width:430px;min-height:100vh;position:relative;display:flex;flex-direction:column;overflow:hidden;background:#edf2f9;}
-  .top{background:transparent;padding:calc(env(safe-area-inset-top) + 8px) 20px 2px;position:relative;z-index:5;}
+  .top{background:transparent;padding:calc(env(safe-area-inset-top) + 20px) 20px 2px;position:relative;z-index:5;}
   .brandrow{display:flex;align-items:center;justify-content:space-between;}
   .brand{display:flex;align-items:center;gap:10px;}
   .logo{width:42px;height:42px;display:block;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 6px 11px rgba(123,92,255,.33));}
@@ -159,7 +159,7 @@
   .no{font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:999px;background:rgba(255,92,168,.1);border:1px solid rgba(255,92,168,.32);color:#c0397a;display:flex;align-items:center;gap:7px;} .no .x{opacity:.65;font-weight:800;cursor:pointer;}
   .sublab{margin-top:14px;font-size:12.5px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
   .note{text-align:center;color:var(--mut2);font-size:11px;margin:18px 4px 4px;line-height:1.5;}
-  .tabs{position:fixed;left:50%;transform:translateX(-50%);width:min(418px,calc(100% - 12px));bottom:calc(env(safe-area-inset-bottom) + 4px);display:flex;gap:4px;background:#fff;border-radius:24px;padding:7px;box-shadow:0 16px 40px rgba(17,27,58,.18);z-index:10;}
+  .tabs{position:fixed;left:50%;transform:translateX(-50%);width:min(418px,calc(100% - 12px));bottom:max(6px, calc(env(safe-area-inset-bottom) - 16px));display:flex;gap:4px;background:#fff;border-radius:24px;padding:7px;box-shadow:0 16px 40px rgba(17,27,58,.18);z-index:10;}
   .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--mut2);font-size:10px;font-weight:700;padding:9px 2px;background:none;border:none;border-radius:17px;transition:.18s;}
   .tab svg{width:21px;height:21px;}
   .tab.on{color:#fff;background:var(--cta);box-shadow:0 8px 18px rgba(123,92,255,.4);}
