@@ -1,5 +1,5 @@
 /* Social PA service worker — offline cache + push-ready */
-const CACHE = 'socialpa-v1';
+const CACHE = 'socialpa-v4';
 const ASSETS = [
   './', './index.html', './manifest.webmanifest',
   './logo.png', './icon-192.png', './icon-512.png', './icon-180.png',
@@ -20,12 +20,29 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const req = e.request;
+  const isDoc = req.mode === 'navigate' || req.destination === 'document';
+  if (isDoc) {
+    // Network-first for the page so updates always land when online.
+    e.respondWith(
+      fetch(req).then(res => {
+        const cp = res.clone();
+        caches.open(CACHE).then(c => c.put(req, cp));
+        return res;
+      }).catch(() => caches.match(req).then(r => r || caches.match('./index.html')))
+    );
+    return;
+  }
+  // Stale-while-revalidate for assets: fast, but refreshes in the background.
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-      const cp = res.clone();
-      caches.open(CACHE).then(c => c.put(e.request, cp));
-      return res;
-    }).catch(() => caches.match('./index.html')))
+    caches.match(req).then(cached => {
+      const net = fetch(req).then(res => {
+        const cp = res.clone();
+        caches.open(CACHE).then(c => c.put(req, cp));
+        return res;
+      }).catch(() => cached);
+      return cached || net;
+    })
   );
 });
 
