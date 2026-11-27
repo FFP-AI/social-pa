@@ -175,7 +175,7 @@
       <div class="brand"><img class="logo" src="logo.png" alt="Social PA"><b>Social&nbsp;<i>PA</i></b></div>
       <div class="hicons">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 004 0"/></svg><span class="dot"></span></div>
+        <div class="ic" id="bellBtn" role="button" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 004 0"/></svg><span class="dot"></span></div>
       </div>
     </div>
     <div class="htitle" id="paTitle"></div>
@@ -543,6 +543,25 @@ renderForYou();renderEx();updateProg();setHead('foryou');
 
 /* PWA */
 if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+
+/* Notifications: tap the bell to grant permission + fire a local test */
+(function(){
+  const bell=document.getElementById('bellBtn');
+  if(!bell)return;
+  bell.style.cursor='pointer';
+  bell.onclick=async()=>{
+    if(!('Notification'in window)){toast('Notifications not supported here');return;}
+    try{
+      let p=Notification.permission;
+      if(p==='default')p=await Notification.requestPermission();
+      if(p==='denied'){toast('Blocked — turn on in iOS Settings → Notifications');return;}
+      if(p!=='granted'){toast('Notifications not enabled');return;}
+      const reg=await navigator.serviceWorker.ready;
+      await reg.showNotification('Social PA',{body:"Test nudge — you're all set. I'll remind you here.",icon:'icon-192.png',badge:'icon-192.png',data:{url:'./'}});
+      toast('Test notification sent 🔔');
+    }catch(e){toast('Could not send: '+(e&&e.message||e));}
+  };
+})();
 </script>
 </body>
 </html>
